@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include "softdraw.h"
 
+void sdint_DrawLineNaive(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
+ const uint32_t bx, const uint32_t by, const Color_t c);
+
+
 FrameBuffer_t *sd_NewFrameBuffer(const uint32_t x, const uint32_t y) {
 	FrameBuffer_t *tBuff = malloc(sizeof(FrameBuffer_t));
 	tBuff->buffer = malloc(sizeof(Color_t) * x * y);
@@ -26,7 +30,7 @@ void sd_DrawPixel(FrameBuffer_t *f, const uint32_t x, const uint32_t y, const Co
 	f->buffer[f->sizeX * y + x] = c;
 }
 
-void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
+void sdint_DrawLineNaive(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
  const uint32_t bx, const uint32_t by, const Color_t c) {
 	
 	uint32_t nbx = bx, nax = ax;
@@ -51,6 +55,11 @@ void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
 		sd_DrawPixel(f, x, y, c);
 	}		
 
+}
+
+void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
+ const uint32_t bx, const uint32_t by, const Color_t c) {
+	sdint_DrawLineNaive(f, ax, ay, bx, by, c);
 }
 
 void sd_FreeFrameBuffer(FrameBuffer_t *f) {
