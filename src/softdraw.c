@@ -32,26 +32,12 @@ void sd_DrawPixel(FrameBuffer_t *f, const uint32_t x, const uint32_t y, const Co
 
 void sdint_DrawLineNaive(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
  const uint32_t bx, const uint32_t by, const Color_t c) {
-	
-	uint32_t nbx = bx, nax = ax;
-	uint32_t nby = by, nay = ay;
-
-	if(ax > bx) {
-		nax = bx;
-		nbx = ax;
-	}
-
-	if(ay > by) {
-		nay = by;
-		nby = ay;
-	}
-
-	uint32_t dx = nbx - nax;
-	uint32_t dy = nby - nay;
+	uint32_t dx = abs(bx - ax);
+	uint32_t dy = abs(by - ay);
 	uint32_t y;
 
-	for(uint32_t x = nax; x <= nbx; x++) {
-		y = nay + dy * (x - nax) / dx;
+	for(uint32_t x = ax; x <= bx; x++) {
+		y = ay + dy * (x - ax) / dx;
 		sd_DrawPixel(f, x, y, c);
 	}		
 
