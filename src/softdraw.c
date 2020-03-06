@@ -26,6 +26,33 @@ void sd_DrawPixel(FrameBuffer_t *f, const uint32_t x, const uint32_t y, const Co
 	f->buffer[f->sizeX * y + x] = c;
 }
 
+void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
+ const uint32_t bx, const uint32_t by, const Color_t c) {
+	
+	uint32_t nbx = bx, nax = ax;
+	uint32_t nby = by, nay = ay;
+
+	if(ax > bx) {
+		nax = bx;
+		nbx = ax;
+	}
+
+	if(ay > by) {
+		nay = by;
+		nby = ay;
+	}
+
+	uint32_t dx = nbx - nax;
+	uint32_t dy = nby - nay;
+	uint32_t y;
+
+	for(uint32_t x = nax; x <= nbx; x++) {
+		y = nay + dy * (x - nax) / dx;
+		sd_DrawPixel(f, x, y, c);
+	}		
+
+}
+
 void sd_FreeFrameBuffer(FrameBuffer_t *f) {
 	free(f->buffer);
 	free(f);
