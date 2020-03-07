@@ -4,8 +4,10 @@
 
 #include "softdraw.h"
 
-#define WINDOW_X 640
-#define WINDOW_Y 480
+#define WINDOW_X 320 
+#define WINDOW_Y 200
+
+uint8_t running = 1;
 
 int mouseX = 0, mouseY = 0;
 
@@ -22,10 +24,10 @@ int main() {
 	m_InitSDL();
 	FrameBuffer_t *buf = sd_NewFrameBuffer(WINDOW_X, WINDOW_Y);	
 
-	for(int i = 0; i < 1000; i++) {
-		sd_DrawPixel(buf, 20, 100, SD_RED);
-		sd_DrawPixel(buf, 50, 200, SD_RED);
-		sd_DrawLine(buf, 20, 100, mouseX, mouseY, SD_WHITE);	
+	while(running) {
+		sd_DrawLine(buf, 80, 150, mouseX, mouseY, SD_WHITE);	
+		sd_DrawLine(buf, 240, 150, mouseX, mouseY, SD_WHITE);	
+		sd_DrawLine(buf, 80, 150, 240, 150, SD_WHITE);	
 		m_BlitPixels(buf);
 		sd_ClearBuffer(buf, SD_GREEN);
 		m_Input();
@@ -57,4 +59,12 @@ void m_BlitPixels(FrameBuffer_t *t) {
 void m_Input() {
 	SDL_PumpEvents();
 	SDL_GetMouseState(&mouseX, &mouseY);
+
+	// Window
+	SDL_Event e;
+	while(SDL_PollEvent(&e) != 0) {
+		if(e.type == SDL_QUIT) {
+			running = 0;
+		}
+	}
 }
