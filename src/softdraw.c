@@ -7,13 +7,9 @@ const Color_t SD_RED = {255, 0, 0};
 const Color_t SD_BLUE = {0, 255, 0};
 const Color_t SD_GREEN = {0, 0, 255};
 
-void sdint_DrawLineBresenham(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
- const uint32_t bx, const uint32_t by, const Color_t c);
-
-void sdint_DrawLineNaive(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
- const uint32_t bx, const uint32_t by, const Color_t c);
-
 FrameBuffer_t *sd_NewFrameBuffer(const uint32_t x, const uint32_t y) {
+	if(x < 0 || y < 0) return NULL;
+
 	FrameBuffer_t *tBuff = malloc(sizeof(FrameBuffer_t));
 	tBuff->buffer = malloc(sizeof(Color_t) * x * y);
 	tBuff->sizeX = x;
@@ -36,7 +32,7 @@ void sd_DrawPixel(FrameBuffer_t *f, const uint32_t x, const uint32_t y, const Co
 	f->buffer[f->sizeX * y + x] = c;
 }
 
-void sdint_DrawLineBresenham(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
+void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
  const uint32_t bx, const uint32_t by, const Color_t c) {
 	int32_t deltaX = abs(bx - ax);
 	int8_t signX = ax < bx ? 1 : -1;
@@ -63,24 +59,6 @@ void sdint_DrawLineBresenham(FrameBuffer_t *f, const uint32_t ax, const uint32_t
 		}
 	}
 	
-}
-
-void sdint_DrawLineNaive(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
- const uint32_t bx, const uint32_t by, const Color_t c) {
-	uint32_t dx = abs(bx - ax);
-	uint32_t dy = abs(by - ay);
-	uint32_t y;
-
-	for(uint32_t x = ax; x <= bx; x++) {
-		y = ay + dy * (x - ax) / dx;
-		sd_DrawPixel(f, x, y, c);
-	}		
-
-}
-
-void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
- const uint32_t bx, const uint32_t by, const Color_t c) {
-	sdint_DrawLineBresenham(f, ax, ay, bx, by, c);
 }
 
 void sd_FreeFrameBuffer(FrameBuffer_t *f) {

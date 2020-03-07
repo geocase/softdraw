@@ -7,7 +7,7 @@ typedef struct {
 } Color_t;
 
 typedef struct {
-	uint32_t sizeX, sizeY;
+	int32_t sizeX, sizeY;
 	Color_t *buffer;
 } FrameBuffer_t;
 
