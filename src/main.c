@@ -7,8 +7,11 @@
 #define WINDOW_X 640
 #define WINDOW_Y 480
 
+int mouseX = 0, mouseY = 0;
+
 void m_InitSDL();
 void m_BlitPixels(FrameBuffer_t *t); 
+void m_Input();
 
 SDL_Window *sdlWin;
 SDL_Renderer *sdlRen;
@@ -18,15 +21,14 @@ int main() {
 
 	m_InitSDL();
 	FrameBuffer_t *buf = sd_NewFrameBuffer(WINDOW_X, WINDOW_Y);	
-	
-	Color_t col = {0, 0, 0};
 
 	for(int i = 0; i < 1000; i++) {
-		col.r = (i % 255);
-		col.g = (i % 255);
-		col.b = (i % 255);
-		sd_ClearBuffer(buf, col);
+		sd_DrawPixel(buf, 20, 100, SD_RED);
+		sd_DrawPixel(buf, 50, 200, SD_RED);
+		sd_DrawLine(buf, 20, 100, mouseX, mouseY, SD_WHITE);	
 		m_BlitPixels(buf);
+		sd_ClearBuffer(buf, SD_GREEN);
+		m_Input();
 	}
 
 	sd_FreeFrameBuffer(buf);
@@ -50,4 +52,9 @@ void m_BlitPixels(FrameBuffer_t *t) {
 		}
 	}
 	SDL_RenderPresent(sdlRen);
+}
+
+void m_Input() {
+	SDL_PumpEvents();
+	SDL_GetMouseState(&mouseX, &mouseY);
 }
