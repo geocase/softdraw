@@ -1,6 +1,12 @@
 #include <stdlib.h>
 #include "softdraw.h"
 
+const Color_t SD_BLACK = {0, 0, 0};
+const Color_t SD_WHITE = {255, 255, 255};
+const Color_t SD_RED = {255, 0, 0};
+const Color_t SD_BLUE = {0, 255, 0};
+const Color_t SD_GREEN = {0, 0, 255};
+
 void sdint_DrawLineBresenham(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
  const uint32_t bx, const uint32_t by, const Color_t c);
 
@@ -13,9 +19,7 @@ FrameBuffer_t *sd_NewFrameBuffer(const uint32_t x, const uint32_t y) {
 	tBuff->sizeX = x;
 	tBuff->sizeY = y;
 
-	Color_t tempCol = {0, 0, 0};
-
-	sd_ClearBuffer(tBuff, tempCol);	
+	sd_ClearBuffer(tBuff, SD_BLACK);	
 
 	return tBuff;
 }
