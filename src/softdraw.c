@@ -7,7 +7,7 @@ const Color_t SD_RED = {255, 0, 0};
 const Color_t SD_BLUE = {0, 255, 0};
 const Color_t SD_GREEN = {0, 0, 255};
 
-FrameBuffer_t *sd_NewFrameBuffer(const uint32_t x, const uint32_t y) {
+FrameBuffer_t *sd_NewFrameBuffer(const int32_t x, const int32_t y) {
 	if(x < 0 || y < 0) return NULL;
 
 	FrameBuffer_t *tBuff = malloc(sizeof(FrameBuffer_t));
@@ -28,12 +28,13 @@ void sd_ClearBuffer(FrameBuffer_t *f, const Color_t c) {
 	}
 }
 
-void sd_DrawPixel(FrameBuffer_t *f, const uint32_t x, const uint32_t y, const Color_t c) {
+void sd_DrawPixel(FrameBuffer_t *f, const int32_t x, const int32_t y, const Color_t c) {
+	if(x < 0 || y < 0) return;
 	f->buffer[f->sizeX * y + x] = c;
 }
 
-void sd_DrawLine(FrameBuffer_t *f, const uint32_t ax, const uint32_t ay,
- const uint32_t bx, const uint32_t by, const Color_t c) {
+void sd_DrawLine(FrameBuffer_t *f, const int32_t ax, const int32_t ay,
+ const int32_t bx, const int32_t by, const Color_t c) {
 	int32_t deltaX = abs(bx - ax);
 	int8_t signX = ax < bx ? 1 : -1;
 	int32_t deltaY = abs(by - ay);
