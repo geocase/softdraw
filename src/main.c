@@ -3,38 +3,36 @@
 #include <time.h>
 
 #include "softdraw.h"
+#include "softdraw_image.h"
 
-#define WINDOW_X 320 
-#define WINDOW_Y 200
+#define WINDOW_X 1000 
+#define WINDOW_Y 500
 
 uint8_t running = 1;
 
 int mouseX = 0, mouseY = 0;
 
 void m_InitSDL();
-void m_BlitPixels(FrameBuffer_t *t); 
+void m_BlitPixels(Image_t *t); 
 void m_Input();
 
 SDL_Window *sdlWin;
 SDL_Renderer *sdlRen;
 
 int main() {
-	srand(time(NULL));
-
 	m_InitSDL();
+
+	Image_t *i = sdi_LoadBMP("sample2.bmp");
+
+
 	FrameBuffer_t *buf = sd_NewFrameBuffer(WINDOW_X, WINDOW_Y);	
 
 	while(running) {
-		sd_DrawLine(buf, 80, 150, mouseX, mouseY, SD_WHITE);	
-		sd_DrawLine(buf, 240, 150, mouseX, mouseY, SD_WHITE);	
-		sd_DrawLine(buf, 80, 150, 240, 150, SD_WHITE);	
-		m_BlitPixels(buf);
-		sd_ClearBuffer(buf, SD_GREEN);
+		m_BlitPixels(i);
 		m_Input();
 	}
 
 	sd_FreeFrameBuffer(buf);
-
 	return 0;
 }
 
@@ -45,10 +43,10 @@ void m_InitSDL() {
 	sdlRen = SDL_CreateRenderer(sdlWin, -1, SDL_RENDERER_ACCELERATED);
 }
 
-void m_BlitPixels(FrameBuffer_t *t) {
+void m_BlitPixels(Image_t *t) {
 	for(int x = 0; x < t->sizeX; x++) {
 		for(int y = 0; y < t->sizeY; y++) {
-			Color_t c = t->buffer[t->sizeX * y + x];
+			Color_t c = t->data[t->sizeX * y + x];
 			SDL_SetRenderDrawColor(sdlRen, c.r, c.g, c.b, 255);
 			SDL_RenderDrawPoint(sdlRen, x, y);
 		}

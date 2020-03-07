@@ -24,6 +24,15 @@ struct dibHeader {
 	int32_t verticalResolution;
 	int32_t colors;
 	int32_t impColors;
+
+	int32_t redBit;
+	int32_t greenBit;
+	int32_t blueBit;
+	int32_t win;
+	
+	int32_t redGamma;
+	int32_t greenGamma;
+	int32_t blueGamma;
 };
 
 enum dibHeaderSize {BITMAPINFOHEADER=40, BITMAPV4HEADER=108};
@@ -31,7 +40,7 @@ enum dibHeaderSize {BITMAPINFOHEADER=40, BITMAPV4HEADER=108};
 void sdiint_BuildBMPHeader(struct bmpHeader *h, FILE *f);
 void sdiint_BuildDIBHeader(struct dibHeader *h, FILE *f);
 void sdiint_FillDIBBitMapInfoHeader(struct dibHeader *h, FILE *f);
-
+void sdiint_FillDIBBitMapV4Header(struct dibHeader *h, FILE *f);
 
 void sdiint_BuildBMPHeader(struct bmpHeader *h, FILE *f) {
 	fseek(f, 0, SEEK_SET);
@@ -61,6 +70,9 @@ void sdiint_BuildDIBHeader(struct dibHeader *h, FILE *f) {
 	switch(h->size) {
 		case BITMAPINFOHEADER:
 			sdiint_FillDIBBitMapInfoHeader(h, f);
+			break;
+		case BITMAPV4HEADER:
+			sdiint_FillDIBBitMapV4Header(h, f);
 			break;
 	}
 }
@@ -96,6 +108,44 @@ void sdiint_FillDIBBitMapInfoHeader(struct dibHeader *h, FILE *f) {
 	fread(&(h->impColors), 4, 1, f);	
 }
 
+void sdiint_FillDIBBitMapV4Header(struct dibHeader *h, FILE *f) {
+	//TODO: Add the correct fields to this
+	fseek(f, 18, SEEK_SET);
+	// coords
+	fread(&(h->width), 4, 1, f);
+	fread(&(h->height), 4, 1, f);
+	printf("coords: %d, %d\n", h->width, h->height);
+
+	// planes
+	fread(&(h->planes), 2, 1, f);
+	
+	// BPP
+	fread(&(h->bitsPerPixel), 2, 1, f);
+	printf("BPP: %d\n", h->bitsPerPixel);
+
+	// Compression method
+	fread(&(h->compression), 4, 1, f);
+	printf("comp: %d\n", h->compression);
+
+	// image size
+	fread(&(h->imageSize), 4, 1, f);
+	printf("imageSize: %d\n", h->imageSize);
+
+	// resolution
+	fread(&(h->horizontalResolution), 4, 1, f);
+	fread(&(h->verticalResolution), 4, 1, f);
+
+	// colors
+	fread(&(h->colors), 4, 1, f);	
+	fread(&(h->impColors), 4, 1, f);
+	printf("colors: %d\nimpColors %d\n", h->colors, h->impColors);
+
+	fread(&(h->redBit), 4, 1, f);	
+	fread(&(h->blueBit), 4, 1, f);
+	fread(&(h->greenBit), 4, 1, f);
+	printf("BITMASKS: r %d, g %d, b %d\n", h->redBit, h->blueBit, h->blueBit);
+}
+
 Image_t *sdi_LoadBMP(char *path) {
 	Image_t *t = malloc(sizeof(Image_t));
 
@@ -121,6 +171,8 @@ Image_t *sdi_LoadBMP(char *path) {
 
 	t->data = malloc(sizeof(Color_t) * t->sizeX * t->sizeY);
 	Color_t *temp = malloc(sizeof(Color_t) * t->sizeX * t->sizeY);
+
+	fseek(f, SEEK_SET, bmpHead->offset);
 
 	switch(dibHead->bitsPerPixel) {
 		case 24:
