@@ -55,12 +55,20 @@ Image_t *sdi_LoadBMP(char *path) {
 
 	fseek(f, dataOffset, SEEK_SET);
 
-	uint8_t out;
+	Color_t *temp = malloc(sizeof(Color_t) * t->sizeX * t->sizeY);
+
 	// Color table
 	for(int32_t i = t->sizeX * t->sizeY; i >= 0 ; i--) {
-		fread(&t->data[i].b, 1, 1, f);
-		fread(&t->data[i].g, 1, 1, f);
-		fread(&t->data[i].r, 1, 1, f);
+		fread(&temp[i].b, 1, 1, f);
+		fread(&temp[i].g, 1, 1, f);
+		fread(&temp[i].r, 1, 1, f);
+	}
+
+	//Horizontal adjust
+	for(int32_t x = t->sizeX; x >= 0; x--) {
+		for(int32_t y = 0; y <= t->sizeY; y++) {
+			t->data[t->sizeX * y + x] = temp[t->sizeX * y + (t->sizeX - x)];
+		}
 	}
 
 	printf("0 value:%d, %d, %d", t->data[0].r, t->data[0].g, t->data[0].b);
