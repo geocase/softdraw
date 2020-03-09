@@ -1,10 +1,13 @@
-#include <inttypes.h>
-
 #ifndef SOFTDRAW_H
 #define SOFTDRAW_H
+#include <inttypes.h>
+
 typedef struct {
 	uint8_t r, g, b;
 } Color_t;
+
+#include "softdraw_image.h"
+
 
 typedef struct {
 	int32_t sizeX, sizeY;
@@ -13,6 +16,8 @@ typedef struct {
 
 FrameBuffer_t *sd_NewFrameBuffer(const int32_t x, const int32_t y);
 void sd_ClearBuffer(FrameBuffer_t *f, const Color_t c);
+void sd_CopyTextureToBuffer(FrameBuffer_t *f, Image_t *i, 
+ const int32_t x, const int32_t y); 
 void sd_DrawLine(FrameBuffer_t *f, const int32_t ax, const int32_t ay,
  const int32_t bx, const int32_t by, const Color_t c);
 void sd_DrawPixel(FrameBuffer_t *f, const int32_t x, const int32_t y, const Color_t c);

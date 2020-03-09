@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include "softdraw.h"
+#include "softdraw_image.h"
 
 const Color_t SD_BLACK = {0, 0, 0};
 const Color_t SD_WHITE = {255, 255, 255};
@@ -24,6 +25,15 @@ void sd_ClearBuffer(FrameBuffer_t *f, const Color_t c) {
 	for(int nx = 0; nx < f->sizeX; nx++) {
 		for(int ny = 0; ny < f->sizeY; ny++) {
 			sd_DrawPixel(f, nx, ny, c);
+		}
+	}
+}
+
+void sd_CopyTextureToBuffer(FrameBuffer_t *f, Image_t *i, 
+ const int32_t x, const int32_t y) {
+	for(int nx = 0; nx < i->sizeX; nx++) {
+		for(int ny = 0; ny < i->sizeY; ny++) {
+			f->buffer[f->sizeX * ny + nx] = i->data[i->sizeX * ny + nx];
 		}
 	}
 }
