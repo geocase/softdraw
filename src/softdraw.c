@@ -33,7 +33,7 @@ void sd_CopyTextureToBuffer(FrameBuffer_t *f, Image_t *i,
  const int32_t x, const int32_t y) {
 	for(int nx = 0; nx < i->sizeX; nx++) {
 		for(int ny = 0; ny < i->sizeY; ny++) {
-			f->buffer[f->sizeX * ny + nx] = i->data[i->sizeX * ny + nx];
+			f->buffer[f->sizeX * (ny + y) + (nx + x)] = i->data[i->sizeX * ny + nx];
 		}
 	}
 }

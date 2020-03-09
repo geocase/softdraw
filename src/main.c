@@ -30,7 +30,7 @@ int main() {
 		sd_DrawLine(buf, 80, 150, mouseX, mouseY, SD_WHITE);	
 		sd_DrawLine(buf, 240, 150, mouseX, mouseY, SD_WHITE);	
 		sd_DrawLine(buf, 80, 150, 240, 150, SD_WHITE);	
-		sd_CopyTextureToBuffer(buf, img, 0, 0);
+		sd_CopyTextureToBuffer(buf, img, mouseX, mouseY);
 		m_BlitPixels(buf);
 		sd_ClearBuffer(buf, SD_GREEN);
 		m_Input();
