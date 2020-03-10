@@ -5,8 +5,8 @@
 const Color_t SD_BLACK = {0, 0, 0};
 const Color_t SD_WHITE = {255, 255, 255};
 const Color_t SD_RED = {255, 0, 0};
-const Color_t SD_BLUE = {0, 255, 0};
-const Color_t SD_GREEN = {0, 0, 255};
+const Color_t SD_BLUE = {0, 0, 255};
+const Color_t SD_GREEN = {0, 255, 0};
 
 FrameBuffer_t *sd_NewFrameBuffer(const int32_t x, const int32_t y) {
 	if(x < 0 || y < 0) return NULL;
