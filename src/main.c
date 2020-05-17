@@ -5,8 +5,8 @@
 #include "softdraw.h"
 #include "softdraw_image.h"
 
-#define WINDOW_X 1280 
-#define WINDOW_Y 720
+#define WINDOW_X 320 
+#define WINDOW_Y 240
 
 uint8_t running = 1;
 
@@ -23,16 +23,14 @@ int main() {
 	srand(time(NULL));
 
 	m_InitSDL();
-	Image_t *img = sdi_LoadBMP("grad.bmp");
 	FrameBuffer_t *buf = sd_NewFrameBuffer(WINDOW_X, WINDOW_Y);	
 
 	while(running) {
 		sd_DrawLine(buf, 80, 150, mouseX, mouseY, SD_WHITE);	
 		sd_DrawLine(buf, 240, 150, mouseX, mouseY, SD_WHITE);	
 		sd_DrawLine(buf, 80, 150, 240, 150, SD_WHITE);	
-		sd_CopyTextureToBuffer(buf, img, 0, 0);
 		m_BlitPixels(buf);
-		sd_ClearBuffer(buf, SD_GREEN);
+		sd_ClearBuffer(buf, SD_BLACK);
 		m_Input();
 	}
 

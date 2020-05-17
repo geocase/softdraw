@@ -8,7 +8,8 @@ const Color_t SD_RED = {255, 0, 0};
 const Color_t SD_BLUE = {0, 0, 255};
 const Color_t SD_GREEN = {0, 255, 0};
 
-FrameBuffer_t *sd_NewFrameBuffer(const int32_t x, const int32_t y) {
+FrameBuffer_t*
+sd_NewFrameBuffer(const int32_t x, const int32_t y) {
 	if(x < 0 || y < 0) return NULL;
 
 	FrameBuffer_t *tBuff = malloc(sizeof(FrameBuffer_t));
@@ -21,7 +22,8 @@ FrameBuffer_t *sd_NewFrameBuffer(const int32_t x, const int32_t y) {
 	return tBuff;
 }
 
-void sd_ClearBuffer(FrameBuffer_t *f, const Color_t c) {
+void
+sd_ClearBuffer(FrameBuffer_t *f, const Color_t c) {
 	for(int nx = 0; nx < f->sizeX; nx++) {
 		for(int ny = 0; ny < f->sizeY; ny++) {
 			sd_DrawPixel(f, nx, ny, c);
@@ -29,7 +31,8 @@ void sd_ClearBuffer(FrameBuffer_t *f, const Color_t c) {
 	}
 }
 
-void sd_CopyTextureToBuffer(FrameBuffer_t *f, Image_t *i, 
+void
+sd_CopyTextureToBuffer(FrameBuffer_t *f, Image_t *i, 
  const int32_t x, const int32_t y) {
 	for(int nx = 0; nx < i->sizeX; nx++) {
 		for(int ny = 0; ny < i->sizeY; ny++) {
@@ -38,7 +41,9 @@ void sd_CopyTextureToBuffer(FrameBuffer_t *f, Image_t *i,
 	}
 }
 
-void sd_DrawPixel(FrameBuffer_t *f, const int32_t x, const int32_t y, const Color_t c) {
+void
+sd_DrawPixel(FrameBuffer_t *f, const int32_t x, const int32_t y, 
+ const Color_t c) {
 	if(x < 0 || y < 0) return;
 	f->buffer[f->sizeX * y + x] = c;
 }
