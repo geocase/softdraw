@@ -25,10 +25,14 @@ int main() {
 	m_InitSDL();
 	FrameBuffer_t *buf = sd_NewFrameBuffer(WINDOW_X, WINDOW_Y);	
 
+	Tri_t k = {.v0[0] = 80, .v0[1] = 150,
+	           .v1[0] = mouseX, .v1[1] = mouseY,
+	           .v2[0] = 240, .v2[1] = 150};
+	
 	while(running) {
-		sd_DrawLine(buf, 80, 150, mouseX, mouseY, SD_WHITE);	
-		sd_DrawLine(buf, 240, 150, mouseX, mouseY, SD_WHITE);	
-		sd_DrawLine(buf, 80, 150, 240, 150, SD_WHITE);	
+		k.v1[0] = mouseX;
+		k.v1[1] = mouseY;
+		sd_DrawTriangle(buf, k, SD_WHITE);
 		m_BlitPixels(buf);
 		sd_ClearBuffer(buf, SD_BLACK);
 		m_Input();

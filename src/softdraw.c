@@ -48,14 +48,16 @@ sd_DrawPixel(FrameBuffer_t *f, const int32_t x, const int32_t y,
 	f->buffer[f->sizeX * y + x] = c;
 }
 
-void sd_DrawLine(FrameBuffer_t *f, const int32_t ax, const int32_t ay,
+void 
+sd_DrawLine(FrameBuffer_t *f, const int32_t ax, const int32_t ay,
  const int32_t bx, const int32_t by, const Color_t c) {
 	int32_t deltaX = abs(bx - ax);
 	int8_t signX = ax < bx ? 1 : -1;
 	int32_t deltaY = abs(by - ay);
 	int8_t signY = ay < by ? 1 : -1;
 	
-	double err = (deltaX > deltaY ? deltaX : -deltaY) / 2, e2;
+	double err = (deltaX > deltaY ? deltaX : -deltaY) / 2;
+	double e2;
 
 	uint32_t y = ay;
 	uint32_t x = ax;
@@ -77,7 +79,15 @@ void sd_DrawLine(FrameBuffer_t *f, const int32_t ax, const int32_t ay,
 	
 }
 
-void sd_FreeFrameBuffer(FrameBuffer_t *f) {
+void
+sd_DrawTriangle(FrameBuffer_t *f, const Tri_t t, const Color_t c) {
+	sd_DrawLine(f, t.v0[0], t.v0[1], t.v1[0], t.v1[1], c);
+	sd_DrawLine(f, t.v1[0], t.v1[1], t.v2[0], t.v2[1], c);
+	sd_DrawLine(f, t.v2[0], t.v2[1], t.v0[0], t.v0[1], c);
+}
+
+void
+sd_FreeFrameBuffer(FrameBuffer_t *f) {
 	free(f->buffer);
 	free(f);
 }
